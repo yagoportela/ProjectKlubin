@@ -32,8 +32,8 @@ namespace Project.Services.Services.User
             return await _repository.InsertAsync (user);
         }
 
-        public async Task<UserEntity> Put (UserEntity user) {
-            return await _repository.UpdateAsync (user);
+        public async Task<UserEntity> Put (UserEntity user, Guid id) {
+            return await _repository.UpdateAsync (user, id);
         }
         
     }

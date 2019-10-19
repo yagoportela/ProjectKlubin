@@ -39,6 +39,7 @@ namespace Project.Infra.Data.Repository
                 }
 
                 item.CreateAt = DateTime.UtcNow;
+                item.Id = Guid.NewGuid();
                 _dataset.Add(item);
 
                 await _context.SaveChangesAsync ();
@@ -70,16 +71,17 @@ namespace Project.Infra.Data.Repository
             }
         }
 
-        public async Task<T> UpdateAsync(T item) {
+        public async Task<T> UpdateAsync(T item, Guid id) {
             try {
-                var result = await _dataset.SingleOrDefaultAsync (p => p.Id.Equals (item.Id));
+                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
                 if (result == null)
                     return null;
 
+                item.Id = new Guid(id.ToString());
                 item.UpdateAt = DateTime.UtcNow;
                 item.CreateAt = result.CreateAt;
 
-                _context.Entry (result).CurrentValues.SetValues (item);
+                _context.Entry (result).CurrentValues.SetValues(item);
                 await _context.SaveChangesAsync ();
             } catch (Exception ex) {
                 throw ex;
