@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Application.interfaces;
 using Project.Domain.Entities;
 using Project.Domain.Interfaces.Services.User;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Project.Application.Controllers
 {
@@ -20,6 +20,7 @@ namespace Project.Application.Controllers
         }
 
         [Route("Login/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult login(Guid id)
         {
             var resultado = _workshop.Get(id);
