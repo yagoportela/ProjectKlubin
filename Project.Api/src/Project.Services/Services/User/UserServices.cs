@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
-using FluentValidation;
+using Newtonsoft.Json;
+using Project.Domain.DTOs;
 using Project.Domain.Entities;
 using Project.Domain.Interfaces;
 using Project.Domain.Interfaces.Services.User;
@@ -30,6 +34,26 @@ namespace Project.Services.Services.User
 
         public async Task<UserEntity> Post (UserEntity user) {
             return await _repository.InsertAsync (user);
+        }
+
+        public async Task<UserRestDto> PostAuth (UserRegisterDTO user) {
+            using (HttpClient client = new HttpClient())
+            {  
+                var content = new StringContent(JsonConvert.SerializeObject(user),
+                                                Encoding.UTF8,
+                                                "application/json");
+
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage response = client.PostAsync("http://localhost:5003/User/register",
+                                                    content).Result;
+                
+                string conteudo = await response.Content.ReadAsStringAsync();
+                var conteudoJson = JsonConvert.DeserializeObject<UserRestDto>(conteudo);
+
+                return conteudoJson;
+
+            }
         }
 
         public async Task<UserEntity> Put (UserEntity user, Guid id) {

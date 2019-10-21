@@ -65,7 +65,15 @@ namespace Onboarding.Ambientalistas.Domain
         }
         protected override void EnsureValidState()
         {
-            throw new NotImplementedException();
+            var valid =
+                AmbientalistaId != null &&
+                Email != null &&
+                NomeCompleto != null &&
+                Apelido != null &&
+                Senha != null;
+
+            if (!valid)
+                throw new InvalidEntityStateException(this, $"Post-checks failed in state {State}");
         }
 
         protected override void When(object @event)
