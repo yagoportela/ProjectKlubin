@@ -5,6 +5,7 @@ namespace Project.Domain.Entities
 {
     public class UserEntity : BaseEntity
     {
+        public string idIdentity { get; set; }
         public string ImgPerfil { get; set; }
         public typeUsers Tipo {get; set;}    
         public string nome {get; set;}

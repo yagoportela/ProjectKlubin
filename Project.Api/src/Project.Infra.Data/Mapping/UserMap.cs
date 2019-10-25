@@ -13,11 +13,12 @@ namespace Project.Infra.Data.Mapping
 
             builder.HasKey(u => u.Id);
 
-            builder.HasIndex(u => u.ImgPerfil)
+            builder.HasIndex(u => u.idIdentity)
                    .IsUnique();
             
             builder.Property(u => u.Tipo)
                    .IsRequired();
+                   
         }
     }
 }

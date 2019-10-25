@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Project.Domain.DTOs
+namespace Project.Domain.Rest
 {
-    public class UserRestDto
+    public class StatusUsersAuth
     {
         [JsonProperty("success")]
         public bool success { get; set; }  
@@ -12,6 +12,7 @@ namespace Project.Domain.DTOs
         public bool data {get; set;}
 
         [JsonProperty("errors")]
-        public List<string> error {get; set;}
+        public List<string> errors {get; set;}
+
     }
 }

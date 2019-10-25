@@ -36,21 +36,37 @@ namespace Project.Application.Controllers
                 return BadRequest(ModelState);
 
             try {
+                 if(await _user.CheckedUserName(userValue.username)){
+
+                        return Json(new {
+                                success = true,
+                                data = false,
+                                errors = new string[]{"Este username já existe!"}
+                            });
+                 }
+
+                 if(await _user.CheckedEmail(userValue.email)){
+                        return Json(new {
+                            success = true,
+                            data = false,
+                            errors = new string[]{"Este e-mail já existe!"}
+                        });
+                 }
+
                 var result = await _user.PostAuth(userValue);
                 
-                 if (result.success != false)
-                 {                     
-                    var resultUser = await _user.Post(userValue.userEntity);
-                     return Json(new {
-                                    success = true,
-                                    resultUser,
-                                    result
-                             });
+                 if (result.result.value.success == false)
+                 {       
+                     return Json(result);              
                  }
-                 else
-                 {
-                     return Json(result);
-                 }
+
+                var resultUser = await _user.Post(userValue.userEntity);
+                    return Json(new {
+                                success = true,
+                                resultUser,
+                                result
+                            });
+            
             }
             catch (ArgumentException ex) {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);

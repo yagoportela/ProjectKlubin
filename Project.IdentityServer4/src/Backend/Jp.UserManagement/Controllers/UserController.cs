@@ -37,6 +37,25 @@ namespace Jp.Management.Controllers
             return Response(true);
         }
 
+        [HttpPost, Route("register-user")]
+        public async Task<ActionResult> RegisterUser([FromBody] RegisterUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Ok( new {status = false} );
+            }
+
+            await _userAppService.Register(model);
+            
+            if(!IsValidOperation()){
+                return Ok( new {Response(true).Result});
+            }
+
+            return Ok( new {Response(true).Result,
+                            data = await _userAppService.FindByNameAsync(model.Username)});
+        }
+
         [HttpPost, Route("register-provider")]
         public async Task<ActionResult<DefaultResponse<bool>>> RegisterWithProvider([FromBody] RegisterUserViewModel model)
         {
@@ -47,7 +66,7 @@ namespace Jp.Management.Controllers
             }
 
             await _userAppService.RegisterWithProvider(model);
-
+                
             return Response(true);
         }
 
@@ -62,7 +81,7 @@ namespace Jp.Management.Controllers
         [HttpGet, Route("checkEmail")]
         public async Task<ActionResult<DefaultResponse<bool>>> CheckEmail(string email)
         {
-            var exist = await _userAppService.CheckUsername(email);
+            var exist = await _userAppService.CheckEmail(email);
 
             return Response(exist);
         }
