@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Builder;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Project.Infra.CrossCutting.Dependences;
 using IdentityServer4.AccessTokenValidation;
 
-namespace Application
+namespace Project.Klubin
 {
     public class Startup
     {
@@ -23,15 +29,13 @@ namespace Application
             DependencesRepositories.ConfigureServices(services);
             DependencesServices.ConfigureServices(services);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
 
-                services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = "http://localhost:5000";
-                    options.RequireHttpsMetadata = false;                   
-                    options.ApiName = "jp_api";
-                    options.ApiSecret = "secret_for_the_api";
+                    options.RequireHttpsMetadata = false;     
                 });
         }
 

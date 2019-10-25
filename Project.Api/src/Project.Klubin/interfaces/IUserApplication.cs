@@ -9,8 +9,8 @@ namespace Project.Application.interfaces
     public interface IUserApplication
     {
         //IActionResult login();
-        Task<bool> Post([FromBody] UserRegisterDTO workshopValue);
-        Task<bool> Put(Guid id, [FromBody] UserEntity workshopValue);
-        Task<bool> Get(Guid id);
+        Task<ActionResult> Post([FromBody] UserRegisterDTO workshopValue);
+        Task<ActionResult> Put(Guid id, [FromBody] UserEntity workshopValue);
+        Task<ActionResult> Get(Guid id);
     }
 }
