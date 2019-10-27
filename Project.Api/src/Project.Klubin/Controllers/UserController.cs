@@ -1,24 +1,28 @@
 using System;
-using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project.Application.interfaces;
-using Project.Domain.DTOs;
-using Project.Domain.Entities;
-using Project.Domain.Interfaces.Services.User;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
+using Project.Domain.DTOs;
+using System.Threading.Tasks;
 
-namespace Project.Application.Controllers
+namespace Project.Klubin.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller, IUserApplication
+    public class UserController : Controller
     {
-        private readonly IUser _user;
+        private readonly IUserApplication _user;
         
-        public UserController(IUser user){
+        public UserController(IUserApplication user){
             _user = user;
+        }
+
+        [Route("Login1")]
+        [HttpGet]
+        public IActionResult login1()
+        {
+            var valor = _user.login1();
+            return Json(valor);
         }
 
         [Route("Login/{id}")]
@@ -34,46 +38,12 @@ namespace Project.Application.Controllers
         {   
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            try {
-                 if(await _user.CheckedUserName(userValue.username)){
-
-                        return Json(new {
-                                success = true,
-                                data = false,
-                                errors = new string[]{"Este username já existe!"}
-                            });
-                 }
-
-                 if(await _user.CheckedEmail(userValue.email)){
-                        return Json(new {
-                            success = true,
-                            data = false,
-                            errors = new string[]{"Este e-mail já existe!"}
-                        });
-                 }
-
-                var result = await _user.PostAuth(userValue);
                 
-                 if (result.result.value.success == false)
-                 {       
-                     return Json(result);              
-                 }
-
-                var resultUser = await _user.Post(userValue.userEntity);
-                    return Json(new {
-                                success = true,
-                                resultUser,
-                                result
-                            });
-            
-            }
-            catch (ArgumentException ex) {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var resultado = await _user.Post(userValue);
+            return Json(new {resultado});
         }
 
-        [HttpPut("{id}")]        
+        /*[HttpPut("{id}")]        
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> Put(Guid id, [FromBody] UserEntity userValue)
         {
@@ -126,6 +96,6 @@ namespace Project.Application.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
-        }
+        }*/
     }
 }

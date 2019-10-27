@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Project.Domain.DTOs;
 using Project.Domain.Entities;
 
@@ -9,8 +8,10 @@ namespace Project.Application.interfaces
     public interface IUserApplication
     {
         //IActionResult login();
-        Task<bool> Post([FromBody] UserRegisterDTO workshopValue);
-        Task<bool> Put(Guid id, [FromBody] UserEntity workshopValue);
-        Task<bool> Get(Guid id);
+        Task<Notifications<UserEntity>> Post(UserRegisterDTO workshopValue);
+        Task<Notifications> Put(Guid id, UserEntity workshopValue);
+        Task<Notifications> Get(Guid id);
+        Notifications<UserEntity>  login1();
+        UserEntity login(Guid id);
     }
 }

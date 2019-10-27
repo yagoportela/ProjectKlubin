@@ -15,16 +15,16 @@ namespace Project.Domain.Rest
     public class RestUserData 
     {        
         [JsonProperty("email")]
-        public RestUserData email {get; set;}
+        public string email {get; set;}
 
         [JsonProperty("name")]
-        public RestUserData name {get; set;}
+        public string name {get; set;}
 
         [JsonProperty("userName")]
-        public RestUserData userName {get; set;}
+        public string userName {get; set;}
 
         [JsonProperty("id")]
-        public RestUserData id {get; set;}
+        public string id {get; set;}
 
     }
 
@@ -37,13 +37,13 @@ namespace Project.Domain.Rest
 
     public class RestUserValue
     {        
-        [JsonProperty("email")]
+        [JsonProperty("success")]
         public bool success {get; set;}
 
-        [JsonProperty("name")]
+        [JsonProperty("data")]
         public bool data {get; set;}
 
-        [JsonProperty("userName")]
+        [JsonProperty("errors")]
         public List<string> errors {get; set;}
 
     }

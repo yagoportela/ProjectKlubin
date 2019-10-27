@@ -13,7 +13,7 @@ using Project.Domain.Interfaces.Services.User;
 
 namespace Project.Services.Services.User
 {
-    public class UserServices : IUser
+    public class UserServices : IUserService
     {
         private readonly IRepository<UserEntity> _repository;
 
@@ -51,8 +51,7 @@ namespace Project.Services.Services.User
 
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                HttpResponseMessage response = client.PostAsync("http://localhost:5003/User/register-user",
-                                                    content).Result;
+                HttpResponseMessage response = client.PostAsync("http://localhost:5003/User/register-user", content).Result;
                 
                 string conteudo = await response.Content.ReadAsStringAsync();
                 var conteudoJson = JsonConvert.DeserializeObject<RegisterUserRest>(conteudo);

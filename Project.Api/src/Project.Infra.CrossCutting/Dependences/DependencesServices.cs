@@ -9,7 +9,7 @@ namespace Project.Infra.CrossCutting.Dependences
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IUser, UserServices>();
+            services.AddTransient<IUserService, UserServices>();
         }
     }
 }

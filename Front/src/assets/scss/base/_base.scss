@@ -1,0 +1,21 @@
+
+
+body a{
+    text-decoration: none;
+    color:unset;
+}
+
+.container{
+    max-width: 1800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+main.container{
+    padding-top: 5em;
+}
+
+.active {
+    color: red;
+    text-decoration: none;
+}
