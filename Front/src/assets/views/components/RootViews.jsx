@@ -13,4 +13,4 @@ export const StyleTextField = styled(({ ...props }) =>
   <TextField variant='outlined' margin='normal' required fullWidth {...props} />)``
 
 export const StyleFormControlLabel = styled(({ ...props }) =>
-  <FormControlLabel control={<Checkbox value='remember' color='primary' />} {...props} />)``
+  <FormControlLabel control={<Checkbox value='remember' color='primary' />} />)``

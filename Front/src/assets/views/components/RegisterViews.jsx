@@ -7,10 +7,10 @@ import Checkbox from '@material-ui/core/Checkbox'
 
 export const StyledButton = styled(({ ...props }) =>
   <Button type='submit' fullWidth variant='contained' color='primary' {...props} />)`
-  margin: theme.spacing(3, 0, 2)`
+  margin: 20px 0px 50px 0px;`
 
 export const StyleTextField = styled(({ ...props }) =>
   <TextField variant='outlined' margin='normal' required fullWidth {...props} />)``
 
 export const StyleFormControlLabel = styled(({ ...props }) =>
-  <FormControlLabel control={<Checkbox value='remember' color='primary' />} {...props} />)``
+  <FormControlLabel control={<Checkbox value='remember' color='primary' />} />)``

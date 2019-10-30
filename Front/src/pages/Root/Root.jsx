@@ -10,11 +10,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 // components servicos
 import { apiAuthentic, apiLogout, apiAuthenticated } from 'services/api'
 // components styles
-import styleClass from 'assets/styles/components/loginStyle.jsx'
+import styleClass from 'assets/styles/components/RootStyle.jsx'
 // components views
-import { StyledButton, StyleTextField, StyleFormControlLabel } from 'assets/views/components/loginViews.jsx'
+import { StyledButton, StyleTextField, StyleFormControlLabel } from 'assets/views/components/RootViews.jsx'
 
-const Login = () => {
+const Root = () => {
   const [userinfo, setUserInfo] = useState({
     isUserLoggedIn: apiAuthenticated()
   })
@@ -57,7 +57,7 @@ const Login = () => {
         <form className={classes.form} noValidate>
           <StyleTextField required id='email' label='Login' name='email' autoComplete='email' autoFocus />
           <StyleTextField required name='password' label='Senha' type='password' id='password' autoComplete='Senha' />
-          <StyleFormControlLabel label='Lembre-me' name="lembre-me"/>
+          <StyleFormControlLabel label='Remember me' />
 
           {!isUserLoggedIn && (
             <Fragment>
@@ -81,4 +81,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Root

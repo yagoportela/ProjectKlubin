@@ -6,38 +6,28 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 // @material-ui/icons
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Assignment from '@material-ui/icons/Assignment'
 // components servicos
-import { apiAuthentic, apiLogout, apiAuthenticated } from 'services/api'
+import { apiAuthentic, apiAuthenticated } from 'services/api'
 // components styles
-import styleClass from 'assets/styles/components/loginStyle.jsx'
+import styleClass from 'assets/styles/components/RegisterStyle.jsx'
 // components views
-import { StyledButton, StyleTextField, StyleFormControlLabel } from 'assets/views/components/loginViews.jsx'
+import { StyledButton, StyleTextField } from 'assets/views/components/RegisterViews.jsx'
 
-const Login = () => {
+const CadastroUsuario = () => {
   const [userinfo, setUserInfo] = useState({
     isUserLoggedIn: apiAuthenticated()
   })
   const { isUserLoggedIn } = userinfo
   const classes = useCallback(styleClass(), [])
 
-  const logar = useCallback((e) => {
+  const cadastrar = useCallback((e) => {
     e.preventDefault()
     apiAuthentic((result) => {
       setUserInfo({
         isUserLoggedIn: result.authenticated
       })
     })
-  }, [])
-
-  const logout = useCallback((e) => {
-    e.preventDefault()
-    apiLogout()
-    setTimeout(() => {
-      setUserInfo({
-        isUserLoggedIn: apiAuthenticated()
-      })
-    }, 50)
   }, [])
 
   return (
@@ -47,30 +37,25 @@ const Login = () => {
       <div className={classes.paper}>
 
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <Assignment />
         </Avatar>
 
         <Typography component='h1' variant='h5'>
-            Entrar
+            Cadastro
         </Typography>
 
         <form className={classes.form} noValidate>
-          <StyleTextField required id='email' label='Login' name='email' autoComplete='email' autoFocus />
+          <StyleTextField required id='email' label='email' name='email' autoComplete='email' autoFocus />
           <StyleTextField required name='password' label='Senha' type='password' id='password' autoComplete='Senha' />
-          <StyleFormControlLabel label='Lembre-me' name="lembre-me"/>
+          <StyleTextField required name='confirmPassword' label='Confirmação da senha' type='password' id='confirmPassword' autoComplete='false' />
+          <StyleTextField required name='phone' label='Celular' type='text' id='phone' autoComplete='phone' />
+          <StyleTextField required name='nome' label='nome' type='text' id='nome' autoComplete='nome' />
+          <StyleTextField required name='username' label='Como quer ser chamado?' type='text' id='username' autoComplete='username' />
 
           {!isUserLoggedIn && (
             <Fragment>
-              <StyledButton onClick={(e) => { logar(e) }}>
-                  Entrar
-              </StyledButton>
-            </Fragment>
-          )}
-
-          {isUserLoggedIn && (
-            <Fragment>
-              <StyledButton onClick={(e) => { logout(e) }}>
-                  Sair
+              <StyledButton onClick={(e) => { cadastrar(e) }}>
+                  Cadastrar
               </StyledButton>
             </Fragment>
           )}
@@ -81,4 +66,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default CadastroUsuario
