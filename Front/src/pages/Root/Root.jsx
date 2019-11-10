@@ -1,81 +1,55 @@
-import React, { useState, Fragment, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 // nodejs library to set properties for components
+import QrCode from 'react.qrcode.generator'
 // @material-ui/core components
-import Avatar from '@material-ui/core/Avatar'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 // @material-ui/icons
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 // components servicos
-import { apiAuthentic, apiLogout, apiAuthenticated } from 'services/api'
+import { apiUser } from 'services/api'
 // components styles
 import styleClass from 'assets/styles/components/RootStyle.jsx'
 // components views
-import { StyledButton, StyleTextField, StyleFormControlLabel } from 'assets/views/components/RootViews.jsx'
 
 const Root = () => {
-  const [userinfo, setUserInfo] = useState({
-    isUserLoggedIn: apiAuthenticated()
+  const classes = useCallback(styleClass(), [])  
+  const [erro, setErro] = useState("");
+  const [QtdMoedas, setMoedas] = useState("");
+  const [CodBarra, setCodBarra] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+
+        const response = await apiUser.get("/api/User");
+
+        if(response.data !== undefined && response.data.result !== undefined){
+          setCodBarra(response.data.result.idIdentity)
+          setMoedas(response.data.result.moedas)
+        }else{
+          console.log("Valores nulos")
+        }
+
+      } catch (err) {
+
+        console.log(err)
+        setErro( "Houve um problema com o login, verifique suas credenciais.");
+
+      }
+    })()
   })
-  const { isUserLoggedIn } = userinfo
-  const classes = useCallback(styleClass(), [])
-
-  const logar = useCallback((e) => {
-    e.preventDefault()
-    apiAuthentic((result) => {
-      setUserInfo({
-        isUserLoggedIn: result.authenticated
-      })
-    })
-  }, [])
-
-  const logout = useCallback((e) => {
-    e.preventDefault()
-    apiLogout()
-    setTimeout(() => {
-      setUserInfo({
-        isUserLoggedIn: apiAuthenticated()
-      })
-    }, 50)
-  }, [])
 
   return (
     <Container component='main' maxWidth='xs'>
       <CssBaseline />
 
       <div className={classes.paper}>
+        {erro && <div>Suas informações não foram atualizadas. Em instante iremos atualizar suas informações.</div>}
+        <div>{QtdMoedas}</div>
 
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-
-        <Typography component='h1' variant='h5'>
-            Entrar
-        </Typography>
-
-        <form className={classes.form} noValidate>
-          <StyleTextField required id='email' label='Login' name='email' autoComplete='email' autoFocus />
-          <StyleTextField required name='password' label='Senha' type='password' id='password' autoComplete='Senha' />
-          <StyleFormControlLabel label='Remember me' />
-
-          {!isUserLoggedIn && (
-            <Fragment>
-              <StyledButton onClick={(e) => { logar(e) }}>
-                  Entrar
-              </StyledButton>
-            </Fragment>
-          )}
-
-          {isUserLoggedIn && (
-            <Fragment>
-              <StyledButton onClick={(e) => { logout(e) }}>
-                  Sair
-              </StyledButton>
-            </Fragment>
-          )}
-
-        </form>
+  <div>{CodBarra && <QrCode value={CodBarra} size={200}/>}</div>
+        <div>{CodBarra}</div>
+  
       </div>
     </Container>
   )

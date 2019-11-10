@@ -53,7 +53,7 @@ namespace Project.Infra.Data.Repository
         public async Task<bool> ExistAsync (Guid id) {
             return await _dataset.AnyAsync(p => p.Id.Equals(id));
         }
-
+        
         public async Task<T> SelectAsync (Guid id) {
             try {
                 return await _dataset.SingleOrDefaultAsync(p => p.Id.Equals (id));

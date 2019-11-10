@@ -1,65 +1,31 @@
-import { login, getToken, logout, isAuthenticated } from './auth'
-import { common } from '../utils/common'
+import axios from "axios";
+import { getToken } from "./auth";
 
-const apiAuthentic = (callback) => {
-  const options = {
-    url: 'https://localhost:5001/api/login/Logar',
-    method: 'POST',
-    body: JSON.stringify({ UserID: 'admin_apiprodutos', Password: 'AdminAPIProdutos01!' }),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'omit',
-    mode: 'cors'
+export const apiLogin = axios.create({
+  baseURL: "http://localhost:5000"
+});
+
+export const apiUser = axios.create({
+  baseURL: "http://localhost:5004"
+});
+
+export const apiUsers = axios.create({
+  baseURL: "http://localhost:5003"
+});
+
+apiLogin.interceptors.request.use(async config => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
+  return config;
+});
 
-  const callbackSucess =
-    result => {
-      login(result)
-      callback(result)
-      return true
-    }
-
-  const callbackError =
-    error => {
-      console.error(error)
-      return false
-    }
-
-  common.ajaxRquest(options, callbackSucess, callbackError)
-}
-
-const apiIsAuthentic = () => {
-  const token = getToken()
-
-  const options = {
-    url: 'https://localhost:5001/api/login/isAuthentic/',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token
-    },
-    mode: 'cors'
+apiUser.interceptors.request.use(async config => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-
-  const callbackSucess =
-    result => {
-      return true
-    }
-
-  const callbackError =
-    error => {
-      console.log(error)
-      return false
-    }
-
-  common.ajaxRquest(options, callbackSucess, callbackError)
-}
-
-const apiLogout = () => {
-  logout()
-}
-
-const apiAuthenticated = () => isAuthenticated()
-
-export { apiAuthentic, apiIsAuthentic, apiLogout, apiAuthenticated }
+  return config;
+}, 
+error => console.log(error));

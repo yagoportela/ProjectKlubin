@@ -32,7 +32,7 @@ namespace Project.Application.Services
 
         public UserEntity login(Guid id)
         {
-            var resultado = _user.Get(id);
+            var resultado = _user.Get(id.ToString());
             return resultado.Result;
         }
 
@@ -54,6 +54,7 @@ namespace Project.Application.Services
                      return new Notifications<UserEntity>(false, result.result.value.errors); 
                  }
 
+                userValue.userEntity.idIdentity = result.data.id;
                 var resultUser = await _user.Post(userValue.userEntity);
                 
                 return new Notifications<UserEntity>(true, resultUser); 
@@ -84,24 +85,24 @@ namespace Project.Application.Services
             }
         }
 
-        public async Task<Notifications> Get(Guid id)
+        public async Task<Notifications<object>> Get(string token)
         {
             try
             {
-                var result = await _user.Get(id);
+                var result = await _user.Get(token);
                 if (result != null)
                 {
-                    return new Notifications(true, "");
+                    return new Notifications<object>(true, result);
                 }
                 else
                 {
-                    return new Notifications(false, "Erro 500.");
+                    return new Notifications<object>(false, "Erro 500.");
                 }
 
             }
             catch (ArgumentException ex)
             {                
-                return new Notifications(false, ex.Message);
+                return new Notifications<object>(false, ex.Message);
             }
         }
     }

@@ -4,6 +4,8 @@ using Project.Application.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Project.Domain.DTOs;
 using System.Threading.Tasks;
+using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace Project.Klubin.Controllers
 {
@@ -19,18 +21,18 @@ namespace Project.Klubin.Controllers
 
         [Route("Login1")]
         [HttpGet]
-        public IActionResult login1()
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult login1(Guid id)
         {
-            var valor = _user.login1();
-            return Json(valor);
+            return Json(Request.Headers["Authorization"]);
         }
 
         [Route("Login/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult login(Guid id)
         {
-            var resultado = _user.Get(id);
-            return Ok(resultado.Result);
+            var resultado = _user.Get(id.ToString());
+            return Ok(id);
         }
 
         [HttpPost]
@@ -69,19 +71,22 @@ namespace Project.Klubin.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
-        }
+        }*/
 
         [HttpGet]
-        public async Task<ActionResult> Get(Guid id)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [DisableCors]
+        public async Task<ActionResult> Get()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
-                var result = await _user.Get(id);
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                
+                if(token == null || token.Length <= 1){
+                    return BadRequest();
+                }
+
+                var result = await _user.Get(token);
                 if (result != null)
                 {
                     return Ok(result);
@@ -96,6 +101,6 @@ namespace Project.Klubin.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
-        }*/
+        }
     }
 }

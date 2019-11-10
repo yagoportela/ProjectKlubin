@@ -23,6 +23,19 @@ namespace Project.Klubin
             DependencesServices.ConfigureServices(services);
             DependencesApplications.ConfigureServices(services);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin() 
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
+
             services.AddMvc();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
@@ -42,6 +55,7 @@ namespace Project.Klubin
             }
 
             app.UseAuthentication();
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }

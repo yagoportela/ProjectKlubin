@@ -10,14 +10,15 @@ using Project.Domain.Rest;
 using Project.Domain.Entities;
 using Project.Domain.Interfaces;
 using Project.Domain.Interfaces.Services.User;
+using Project.Domain.Interfaces.Repository.User;
 
 namespace Project.Services.Services.User
 {
     public class UserServices : IUserService
     {
-        private readonly IRepository<UserEntity> _repository;
+        private readonly IUserRepository<UserEntity> _repository;
 
-        public UserServices(IRepository<UserEntity> repository){
+        public UserServices(IUserRepository<UserEntity> repository){
             _repository = repository;
         }
 
@@ -25,8 +26,19 @@ namespace Project.Services.Services.User
             return await _repository.DeleteAsync (id);
         }
 
-        public async Task<UserEntity> Get (Guid id) {
-            return await _repository.SelectAsync (id);
+        public async Task<UserEntity> Get (string token) {
+
+            using (HttpClient client = new HttpClient())
+            {  
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = client.GetAsync("http://localhost:5000/connect/userinfo").Result;
+                
+                string conteudo = await response.Content.ReadAsStringAsync();
+                var conteudoJson = JsonConvert.DeserializeObject<UserRest>(conteudo);
+            
+                var retorno = await _repository.ToRecover(conteudoJson.sub);
+                return await _repository.ToRecover(conteudoJson.sub);
+            }
         }
 
         public async Task<IEnumerable<UserEntity>> GetAll () {
@@ -34,6 +46,7 @@ namespace Project.Services.Services.User
         }
 
         public async Task<UserEntity> Post (UserEntity user) {
+            user.moedas = "0";
             return await _repository.InsertAsync (user);
         }
         

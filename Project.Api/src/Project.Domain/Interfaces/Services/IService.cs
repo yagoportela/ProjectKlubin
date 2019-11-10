@@ -11,7 +11,7 @@ namespace Project.Domain.Interfaces.Services
         Task<T> Post(T obj);
         Task<T> Put(T obj, Guid id);
         Task<bool> Delete(Guid id);
-        Task<T> Get(Guid id);
+        Task<T> Get(string id);
         Task<IEnumerable<T>> GetAll();
     }
 }

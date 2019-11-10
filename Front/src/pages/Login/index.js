@@ -1,2 +1,4 @@
 import Login from './login'
-export default Login
+import { withRouter } from 'react-router-dom';
+
+export default withRouter(Login)

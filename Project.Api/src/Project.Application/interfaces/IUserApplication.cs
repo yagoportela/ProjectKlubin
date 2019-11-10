@@ -10,8 +10,8 @@ namespace Project.Application.interfaces
         //IActionResult login();
         Task<Notifications<UserEntity>> Post(UserRegisterDTO workshopValue);
         Task<Notifications> Put(Guid id, UserEntity workshopValue);
-        Task<Notifications> Get(Guid id);
-        Notifications<UserEntity>  login1();
+        Task<Notifications<object>> Get(string token);
+        Notifications<UserEntity> login1();
         UserEntity login(Guid id);
     }
 }
