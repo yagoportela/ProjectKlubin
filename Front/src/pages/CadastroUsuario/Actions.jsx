@@ -1,8 +1,7 @@
 
 import qs from 'qs';
 import { apiUser, apiLogin } from 'services/api'
-import { login } from "services/auth";
-import { createBrowserHistory } from 'history';
+import { login, secrets } from "services/auth";
 
 
 export const Cadastrar = async (e, nome, email, senha, confSenha, celular, Callback, CallbackErro) => {
@@ -32,37 +31,65 @@ export const Cadastrar = async (e, nome, email, senha, confSenha, celular, Callb
                 "providerId":"string"
             }
 
-            console.log(data);
             const headers = {
                 'Content-Type': 'application/json'
             };
 
-            const response = await apiUser.post(
-                                    "/api/User", 
-                                    data,
-                                    headers);
-            
-            Callback(response.data);
-        //   login(response.data);
-        //   let historya = createBrowserHistory({ forceRefresh: true });
-        //   historya.push('/');
+           await apiUser.post("/api/User", 
+                                data,
+                                headers)
+                        .then(success => {
+                            console.log(success.data)
+                            if(success.data != null && !success.data.resultado.status){
+                                CallbackErro( success.data.resultado.erros[0])
+                            } else{
+                                Callback(success.data);
+                            }
+                        })
+                        .catch(fail => {
+                            console.error(fail);                         
+                            CallbackErro("Estamos em manutenção. por favor, espere alguns minutos para continuar o cadastro.")
+                        })
+   
 
         } catch (err) {
-          CallbackErro( "Houve um problema com o login, verifique suas credenciais.")
+            console.error(err)
+            CallbackErro("Estamos em manutenção. por favor, espere alguns minutos para continuar o cadastro.")
         }
     
-  };
+  }
 
   export const Logar = async (email, senha) => {
 
-    try {
-        
-        let history = createBrowserHistory({ forceRefresh: true });
-        history.push('/');
+        try {
+          const secret = secrets({
+            grant_type: 'password',
+            redirect_uri: 'http://localhost:3000/login',
+            username: email,
+            password: senha })
 
-    } catch (err) {          
-        let history = createBrowserHistory({ forceRefresh: true });
-        history.push('/');
-    }
-    
+          const data = qs.stringify(secret);
+
+          const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          };
+
+          await apiLogin.post("/connect/token", 
+                              data,
+                              headers)
+                        .then(success => {
+                          login(success.data);
+                          return true
+                        })
+                        .catch(error => {                                    
+                          console.error(error.success)
+                          return false;
+                        })
+
+        } catch (err) {
+          console.error(err)
+          return false
+        }
+
+        return true;
   };

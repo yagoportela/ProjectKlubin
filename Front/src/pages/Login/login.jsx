@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import qs from 'qs';
 import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
@@ -7,11 +7,12 @@ import Avatar from '@material-ui/core/Avatar'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
+import CircularProgress from '@material-ui/core/CircularProgress';
 // @material-ui/icons
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 // components servicos
 import { apiLogin } from 'services/api'
-import { login } from "services/auth";
+import { login, secrets } from "services/auth";
 // components styles
 import styleClass from 'assets/styles/components/loginStyle.jsx'
 // components views
@@ -24,6 +25,7 @@ const Login = () => {
   const [email, setEmail] = useState();
   const [senha, setSenha] = useState();
   const [erro, setErro] = useState();
+  const [submit, setSubmit] = useState(false)
 
   const logar = async e => {
     e.preventDefault();
@@ -32,33 +34,38 @@ const Login = () => {
       setErro("Preencha e-mail e senha para continuar!" );
     } else {
         try {
-          
-          const data = qs.stringify({
-            client_secret: '511536EF-F270-4058-80CA-1C89C192F69A',
-            client_id: 'UserManagementUI',
+          setSubmit(true)
+
+          const secret = secrets({            
             grant_type: 'password',
             redirect_uri: 'http://localhost:3000/login',
             username: email,
-            password: senha
-          });
+            password: senha})
+
+          const data = qs.stringify(secret);
 
           const headers = {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           };
 
-          const response = await apiLogin.post(
-                                  "/connect/token", 
-                                  data,
-                                  headers);
-
-          login(response.data);
-          let history = createBrowserHistory({ forceRefresh: true });
-          history.push('/');
+          await apiLogin.post("/connect/token", 
+                              data,
+                              headers)
+                        .then(success => {
+                          login(success.data);
+                          let history = createBrowserHistory({ forceRefresh: true });
+                          history.push('/');
+                        })
+                        .catch(error => {                                    
+                          console.error(error.response)
+                          setErro( "Houve um problema com o login, verifique suas credenciais.");
+                          setSubmit(false)
+                        })
 
         } catch (err) {
-          console.log(err)
-          setErro( "Houve um problema com o login, verifique suas credenciais.");
-
+          console.error(err)
+          setErro( "Houve um problema com o login, verifique suas credenciais.")
+          setSubmit(false)
         }
     }
   };
@@ -101,11 +108,12 @@ const Login = () => {
           <StyleFormControlLabel label='Lembre-me' 
                                   name="lembre-me"/>
 
-          <Fragment>
-            <StyledButton onClick={(e) => { logar(e) }}>
-                Entrar
-            </StyledButton>
-          </Fragment>
+          <div>
+            {!submit && (<StyledButton onClick={(e) => { logar(e) }}>
+                            Entrar
+            </StyledButton>)}            
+            {submit && <CircularProgress />}
+          </div>
 
         </form>
       </div>

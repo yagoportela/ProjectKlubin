@@ -1,7 +1,7 @@
 export const LiberarSubmit = (erro) => {
     let liberar = true;
-    Object.keys(erro).map((valor)=>{ 
-        if(erro[valor].erro){
+    Object.keys(erro).map((valor) => { 
+        if(erro[valor].erro && valor !== "conexao"){
             liberar = false
         }
     })

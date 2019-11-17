@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useCallback } from 'react'
+import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
 // @material-ui/core components
 import Avatar from '@material-ui/core/Avatar'
@@ -67,11 +68,23 @@ const CadastroUsuario = () => {
               senha, 
               confSenha, 
               celular, 
-              success => {
-                Logar(email, senha)               
-                setSubmit(false)
+              () => {
+                if(Logar(email, senha)){                 
+                  let history = createBrowserHistory({ forceRefresh: true });
+                  history.push('/'); 
+                }
+                else {
+                  setSubmit(false)
+                }
               },
               error => {
+                setErro({
+                ...erro,                              
+                conexao: {
+                    erro: true,
+                    menssagem: error
+                  }
+                }) 
                 console.error(error)                
                 setSubmit(false)
 
