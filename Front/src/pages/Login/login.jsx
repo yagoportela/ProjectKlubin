@@ -22,9 +22,9 @@ const Login = () => {
   
   const classes = useCallback(styleClass(), [])
 
-  const [email, setEmail] = useState();
-  const [senha, setSenha] = useState();
-  const [erro, setErro] = useState();
+  const [email, setEmail] = useState()
+  const [senha, setSenha] = useState()
+  const [erro, setErro] = useState()
   const [submit, setSubmit] = useState(false)
 
   const logar = async e => {

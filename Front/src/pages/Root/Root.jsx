@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
 import QrCode from 'react.qrcode.generator'
 // @material-ui/core components
@@ -7,6 +8,7 @@ import Container from '@material-ui/core/Container'
 // @material-ui/icons
 // components servicos
 import { apiUser } from 'services/api'
+import { logout } from "services/auth";
 import { atualizar_refresh_token } from 'services/connect'
 // components styles
 import styleClass from 'assets/styles/components/RootStyle.jsx'
@@ -18,13 +20,19 @@ const Root = () => {
   const [QtdMoedas, setMoedas] = useState("");
   const [CodBarra, setCodBarra] = useState("");
 
+  const erroLogin = () => {                            
+    logout();
+    let history = createBrowserHistory({ forceRefresh: true });
+    history.push('/');
+  }
+
   const ResgatarInfo = (response) => {
     if(response.data !== undefined && response.data.result !== undefined){
       setCodBarra(response.data.result.idIdentity)
       setMoedas(response.data.result.moedas)
     }else{
-      console.error(response)
-      setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
+      erroLogin()
+      setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.")
     }
   }
 
@@ -34,7 +42,7 @@ const Root = () => {
                     ResgatarInfo(response)
                   })
                   .catch(err => {
-                    if(err.response.status === 401){
+                    if(err.response !== undefined && err.response.status === 401){
                       atualizar_refresh_token(
                           success => {
                             if(success.status === 200){                                  
@@ -43,9 +51,14 @@ const Root = () => {
                           },
                           fail => {
                             console.error(fail)
+                            erroLogin()
                             setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
                           }
                         )
+                    }else{                      
+                      console.error(err)
+                      erroLogin()
+                      setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
                     }
                   })
   }
@@ -61,6 +74,7 @@ const Root = () => {
           },
           fail => {
             console.error(fail)
+            erroLogin()
             setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
           }
         )
@@ -68,6 +82,7 @@ const Root = () => {
 
       } catch (err) {
         console.error(err)
+        erroLogin()
         setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
 
       }
@@ -79,7 +94,7 @@ const Root = () => {
       <CssBaseline />
 
       <div className={classes.paper}>
-        {erro && <div>Suas informações não foram atualizadas. Em instante iremos atualizar suas informações.</div>}
+        {erro && <div>{erro}</div>}
         <div>{QtdMoedas}</div>
 
   <div>{CodBarra && <QrCode value={CodBarra} size={200}/>}</div>

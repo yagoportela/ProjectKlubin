@@ -5,10 +5,9 @@ import { isAuthenticated } from "./services/auth"
 import history from './services/history';
 import 'assets/scss/main.scss'
 
-//const Main = lazy(() => import('./pages/Main'))
+const Main = lazy(() => import('./pages/Main'))
 const Login = lazy(() => import('./pages/Login'))
 const CadastroUsuario = lazy(() => import('./pages/CadastroUsuario'))
-const Root = lazy(() => import('./pages/Root'))
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -21,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       )
     }
   />
-);
+)
 
 const IsNotAuthenticated = ({ component: Component, ...rest }) => (
   <Route
@@ -34,7 +33,8 @@ const IsNotAuthenticated = ({ component: Component, ...rest }) => (
       )
     }
   />
-);
+)
+
 
 const App = () => (
   <Fragment>
@@ -45,8 +45,7 @@ const App = () => (
         <Suspense fallback={<LinearProgress />} >
             <IsNotAuthenticated path='/login' component={Login} />
             <IsNotAuthenticated path='/cadastro' component={CadastroUsuario} />
-            <PrivateRoute  path='/' exact component={Root} />
-            {/*<Route path='/' component={Main} />*/}
+            {<PrivateRoute path='/' component={Main} />}
         </Suspense>
         </Switch>
     </Router>

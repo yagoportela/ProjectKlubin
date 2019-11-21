@@ -12,6 +12,7 @@ export class Routes extends Component {
                             <Route
                                 key={route.path}
                                 path={"/"+route.link}
+                                exact={route.exact === undefined || route.exact ? true : false}
                                 component={() => <h2><route.content /></h2>}
                             />
                     )})}

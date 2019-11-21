@@ -1,6 +1,6 @@
 export const LiberarSubmit = (erro) => {
-    let liberar = true;
-    Object.keys(erro).map((valor) => { 
+    let liberar = true
+    Object.keys(erro).forEach((valor) => { 
         if(erro[valor].erro && valor !== "conexao"){
             liberar = false
         }
@@ -53,7 +53,7 @@ export const ValidarCelular = (celular) => {
                 menssagem: ""}
     } 
     const celularFormatado = celular.replace(/[^\d]/gi, '')
-    const regex = /^(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/
+    const regex = /^(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\?(\d{4}))$/
 
     return {erro: !regex.test(celularFormatado),
             menssagem: !regex.test(celularFormatado) ? "Número inválido!" : ''}
