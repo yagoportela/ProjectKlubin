@@ -7,7 +7,6 @@ const headerStyle = makeStyles(() => ({
     background: theme.primary.white
   },
   list: {
-    paddingTop: '20%',
     minWidth: '240px'
   },
   rotaLink: {
@@ -21,12 +20,12 @@ const headerStyle = makeStyles(() => ({
   iconButton: {
     width: '100%',
     justifyContent: 'flex-end',
-    flex: 'auto',
-    color: theme.primary.yellow
+    display: 'flex',
+    color: theme.primary.object
   },
   Tabs: {
     zIndex: 4,
-    color: theme.primary.yellow,
+    color: theme.primary.object,
     '& .MuiTabs-scrollable': {
       width: '100%',
       justifyContent: 'center'
@@ -34,14 +33,14 @@ const headerStyle = makeStyles(() => ({
   },
   Tab: {
     '&$selected': {
-      color: theme.primary.yellow
+      color: theme.primary.object
     }
   },
   indicator: {
-    backgroundColor: theme.primary.yellow
+    backgroundColor: theme.primary.object
   },
   selected: {
-    color: theme.primary.yellow
+    color: theme.primary.object
   },
   sectionDesktop: {
     textAlign: 'right',
@@ -49,12 +48,14 @@ const headerStyle = makeStyles(() => ({
     position: 'absolute',
     paddingRight: '60px',
     paddingTop: '10px',
-    color: theme.primary.yellow
+    color: theme.primary.object
   },
   sectionMobile: {
-    position: 'absolute',
+    width: '100%',
     paddingTop: '10px',
-    zIndex: 3
+    display: 'flex',
+    justifyContent: 'center'
+    
   }
 }))
 

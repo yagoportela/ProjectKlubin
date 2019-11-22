@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment } from 'react'
 // nodejs library to set properties for components
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -9,14 +9,10 @@ import Tab from '@material-ui/core/Tab'
 import IconLogin from 'assets/views/components/HeaderViews.jsx'
 
 const HeaderDesktop = ({ classes, routes }) => {
-  const [value, setValue] = useState('/adicionar-moedas')
+  const [value, setValue] = useState(window.location.pathname)
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
-
-  useEffect(() => {
-    setValue(window.location.pathname)
-  })
   
   return (
     <Fragment>

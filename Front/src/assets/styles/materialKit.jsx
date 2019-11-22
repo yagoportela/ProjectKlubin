@@ -2,13 +2,11 @@ import { createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
   pallete:{
-    primary: 'rgb(167, 144, 70)'
   },
   primary: {
     main: 'rgb(167, 144, 70)',
-    yellow: 'rgb(235, 188, 14)',
+    object: 'rgb(7, 132, 188)',
     white: '#fafafacf',
-    color: 'rgb(167, 144, 70)'
   },
   secondary: {
     light: '#0066ff',

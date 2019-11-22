@@ -38,14 +38,15 @@ const Header = () => {
         </Hidden>
 
         <Hidden mdUp>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerToggle}
-            className={classes.iconButton}
-          >
-            <MenuIcon />
-          </IconButton>
+          <div className={classes.iconButton}>
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
         </Hidden>
       </Toolbar>
 

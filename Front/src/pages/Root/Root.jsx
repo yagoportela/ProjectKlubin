@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
-import QrCode from 'react.qrcode.generator'
+import QRCode from 'qrcode.react'
 // @material-ui/core components
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
@@ -94,11 +94,12 @@ const Root = () => {
       <CssBaseline />
 
       <div className={classes.paper}>
+        
         {erro && <div>{erro}</div>}
         <div>{QtdMoedas}</div>
 
-  <div>{CodBarra && <QrCode value={CodBarra} size={200}/>}</div>
-        <div>{CodBarra}</div>
+        <div>{CodBarra && <QRCode value={CodBarra} size={200} />}</div>
+        <div className={classes.codBarra}>{CodBarra}</div>
   
       </div>
     </Container>

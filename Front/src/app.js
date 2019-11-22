@@ -43,9 +43,9 @@ const App = () => (
     <Router history={history}>      
       <Switch>
         <Suspense fallback={<LinearProgress />} >
-            <IsNotAuthenticated path='/login' component={Login} />
-            <IsNotAuthenticated path='/cadastro' component={CadastroUsuario} />
-            {<PrivateRoute path='/' component={Main} />}
+            <IsNotAuthenticated path='/login' exact component={Login} />
+            <IsNotAuthenticated path='/cadastro' exact component={CadastroUsuario} />
+            {<PrivateRoute path='/' exact={!isAuthenticated()} component={Main} />}
         </Suspense>
         </Switch>
     </Router>

@@ -1,6 +1,4 @@
 import React, { useState, useCallback } from 'react'
-import qs from 'qs';
-import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
 // @material-ui/core components
 import Avatar from '@material-ui/core/Avatar'
@@ -10,29 +8,16 @@ import Container from '@material-ui/core/Container'
 import CircularProgress from '@material-ui/core/CircularProgress';
 // @material-ui/icons
 import Person from '@material-ui/icons/Person'
-// components servicos
-import { apiLogin } from 'services/api'
-import { login, secrets } from "services/auth";
 // components styles
 import styleClass from 'assets/styles/components/loginStyle.jsx'
 // components views
-import { StyledButton, StyleTextField, StyleFormControlLabel } from 'assets/views/components/loginViews.jsx'
+import { StyledButton, StyleTextField } from 'assets/views/components/loginViews.jsx'
 
-const AdicionarMoedas = ({id}) => {
+const AdicionarMoedas = () => {
   const classes = useCallback(styleClass(), [])  
-  const [Result, setResult] = useState(id);
+  const [Result, setResult] = useState();
   const [submit, setSubmit] = useState(false)
   const [erro, setErro] = useState()
-
-  const handleScan = data => {
-    if (data) {
-      setResult(data)
-    }
-  }
-
-  const handleError = err => {
-    console.error(err)
-  }
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -66,9 +51,12 @@ const AdicionarMoedas = ({id}) => {
 
           <div>
 
-           {!submit && <StyledButton onClick={(e) => { }}>
-                              Enviar
-            </StyledButton> }         
+            {!submit && 
+              <StyledButton onClick={(e) => { console.log(e) }}>
+                Enviar
+              </StyledButton> 
+            }
+
             {submit && <CircularProgress />}
           </div>
 

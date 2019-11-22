@@ -20,7 +20,7 @@ const HeaderMobile = ({ mobileOpen, handleDrawerToggle, classes, routes }) => (
     onClose={handleDrawerToggle}
   >
     <div className={classes.sectionMobile}>
-      <IconLogin />
+      <IconLogin className={classes.iconMobile}/>
     </div>
       <List
         component='nav'
@@ -28,7 +28,6 @@ const HeaderMobile = ({ mobileOpen, handleDrawerToggle, classes, routes }) => (
         aria-labelledby='nested-list-subheader'
         subheader={
           <ListSubheader component='div' id='nested-list-subheader'>
-            Lista de itens
           </ListSubheader>
         }
       >

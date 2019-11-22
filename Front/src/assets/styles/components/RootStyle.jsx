@@ -20,6 +20,9 @@ const styleClass = makeStyles(() => ({
   form: {
     width: '100%',
     marginTop: theme.spacing(1)
+  },
+  codBarra: {
+    textAlign: 'center'
   }
 }))
 

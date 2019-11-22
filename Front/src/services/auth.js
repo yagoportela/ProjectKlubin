@@ -21,6 +21,7 @@ export const login = token => {
 
 export const logout = () => {
   localStorage.removeItem(TOKEN_KEY)
+  localStorage.removeItem(TOKEN_KEY_REFRESH)
   localStorage.removeItem('created')
   localStorage.removeItem('expiration')
 }

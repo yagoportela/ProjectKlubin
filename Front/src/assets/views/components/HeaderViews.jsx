@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react'
+import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
 import PropTypes from 'prop-types'
 // @material-ui/core components
@@ -7,6 +8,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import IconButton from '@material-ui/core/IconButton'
 // @material-ui/icons
 import AccountCircle from '@material-ui/icons/AccountCircle'
+// eslint-disable-next-line no-unused-vars
+import theme from 'assets/styles/materialKit.jsx'
+// components servicos
+import { logout } from "services/auth";
 
 const IconLogin = ({ classes }) => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -18,6 +23,12 @@ const IconLogin = ({ classes }) => {
     setAnchorEl(null)
   }
 
+  const sair = () => {    
+    logout()    
+    let history = createBrowserHistory({ forceRefresh: true });
+    history.push('/')
+  }
+
   return (
     <Fragment>
       <IconButton
@@ -27,7 +38,7 @@ const IconLogin = ({ classes }) => {
         onClick={handleClick}
       >
         <AccountCircle
-          htmlColor='rgb(235, 188, 14)'
+          htmlColor={theme.primary.object}
           fontSize='large' />
       </IconButton>
       <Menu
@@ -35,10 +46,9 @@ const IconLogin = ({ classes }) => {
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleClose}
+        onClick={handleClose}
       >
-        <MenuItem onClick={handleClose}>Meu Perfil</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={sair}>Logout</MenuItem>
       </Menu>
     </Fragment>
   )
