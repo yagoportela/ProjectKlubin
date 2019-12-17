@@ -6,9 +6,7 @@ namespace Project.Domain.Abstracts
     public abstract class BaseEntity
     {
         [Key]
-        private Guid _id { get; set; }
-        public Guid Id { get; set; }
-        
+        public Guid Id { get; set; }        
 
         private bool Ativo { get; set; }
                 

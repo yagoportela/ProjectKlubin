@@ -19,12 +19,12 @@ namespace Project.Klubin.Controllers
             _user = user;
         }
 
-        [Route("Login1")]
-        [HttpGet]
+        [HttpGet("AdicionarMoedas/{id}/{quantidade:int}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public IActionResult login1(Guid id)
+        public async Task<IActionResult> AdicionarMoeda(string id, int quantidade)
         {
-            return Json(Request.Headers["Authorization"]);
+            var resultado = await _user.AdicionarMoedas(id, quantidade);
+            return Json(resultado);
         }
 
         [Route("Login/{id}")]

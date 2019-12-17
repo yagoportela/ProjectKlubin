@@ -11,25 +11,18 @@ import Person from '@material-ui/icons/Person'
 // components styles
 import styleClass from 'assets/styles/components/loginStyle.jsx'
 // components views
-import { StyledButton, 
-          StyleTextField,
-          StyleFormControlSelect} from 'assets/views/components/loginViews.jsx'
+import { StyledButton, StyleTextField } from 'assets/views/components/loginViews.jsx'
 
 const AdicionarMoedas = () => {
   const classes = useCallback(styleClass(), [])  
+  const [Result, setResult] = useState();
   const [submit, setSubmit] = useState(false)
   const [erro, setErro] = useState()
-  const [qrCode, setQrCode] = useState()
-  const [produtos, setProdutos] = useState()
-  const [quantidade, setQuantidade] = useState('')
-
-  const ValoresReciclagens = () => {
-
-    }
 
   return (
     <Container component='main' maxWidth='xs'>
-      <CssBaseline />      
+      <CssBaseline />
+      
 
       <div className={classes.paper}>
 
@@ -38,7 +31,7 @@ const AdicionarMoedas = () => {
         </Avatar>
 
         <Typography component='h1' variant='h5'>
-            Adicionar Moedas
+            Entrar
         </Typography>
       
         <div className="Error">{erro && <p>{erro}</p>}</div>
@@ -48,34 +41,13 @@ const AdicionarMoedas = () => {
                           id='qrCode' 
                           label='QR Code' 
                           name='qrCode' 
-                          autoFocus  
-                          onChange={ev => {
-                            setQrCode(ev.target.value)
-                          }}/>
+                          autoFocus  />
 
           <StyleTextField required 
-                          name='produto' 
-                          label='Produto' 
-                          type='text' 
-                          id='produto' 
-                          onChange={ev => {
-                            setProdutos(ev.target.value)
-                          }} />
-          <StyleTextField required 
-                          name='quantidade' 
-                          label='Quantidade (Kg)' 
-                          type='text' 
-                          value={quantidade}
-                          id='valor' 
-                          onChange={ev => {
-                            const valor = ev.target.value
-                                            .replace(/\D/g, '') 
-                                            .replace(/(\d{0,10})(\d{2})/, ' $1,$2')
-                                            .replace(/(,\d{2})\d+?$/, '$1') 
-                            setQuantidade(valor)
-                          }} />
-
-          <StyleFormControlSelect />
+                          name='valor' 
+                          label='Valor' 
+                          type='number' 
+                          id='valor'  />
 
           <div>
 

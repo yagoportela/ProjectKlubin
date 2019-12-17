@@ -26,6 +26,10 @@ const HeaderDesktop = ({ classes, routes }) => {
           classes={{ indicator: classes.indicator }}
         >
           { routes.map((rotas, index) => {
+
+            if(!rotas.barra)
+              return ''
+              
             return (            
               <Tab
                 key={index}

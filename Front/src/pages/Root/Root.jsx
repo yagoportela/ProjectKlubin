@@ -1,108 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { createBrowserHistory } from 'history';
 // nodejs library to set properties for components
 import QRCode from 'qrcode.react'
-// @material-ui/core components
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
 // @material-ui/icons
 // components servicos
-import { apiUser } from 'services/api'
-import { logout } from "services/auth";
-import { atualizar_refresh_token } from 'services/connect'
-// components styles
-import styleClass from 'assets/styles/components/RootStyle.jsx'
-// components views
+import styleClass from './RootStyle'
+import { effect } from './RootAction'
 
 const Root = () => {
   const classes = useCallback(styleClass(), [])  
-  const [erro, setErro] = useState("");
-  const [QtdMoedas, setMoedas] = useState("");
-  const [CodBarra, setCodBarra] = useState("");
-
-  const erroLogin = () => {                            
-    logout();
-    let history = createBrowserHistory({ forceRefresh: true });
-    history.push('/');
-  }
-
-  const ResgatarInfo = (response) => {
-    if(response.data !== undefined && response.data.result !== undefined){
-      setCodBarra(response.data.result.idIdentity)
-      setMoedas(response.data.result.moedas)
-    }else{
-      erroLogin()
-      setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.")
-    }
-  }
-
-  var conexaoInfo = async () => {
-    await apiUser.get("/api/User")
-                  .then(response => {
-                    ResgatarInfo(response)
-                  })
-                  .catch(err => {
-                    if(err.response !== undefined && err.response.status === 401){
-                      atualizar_refresh_token(
-                          success => {
-                            if(success.status === 200){                                  
-                              conexaoInfo()
-                            }
-                          },
-                          fail => {
-                            console.error(fail)
-                            erroLogin()
-                            setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
-                          }
-                        )
-                    }else{                      
-                      console.error(err)
-                      erroLogin()
-                      setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
-                    }
-                  })
-  }
+  const [erro, setErro] = useState("Erro");
+  const [QtdMoedas, setMoedas] = useState("10");
+  const [CodBarra, setCodBarra] = useState("teste@teste.com");
 
   useEffect(() => {
-    (() => {
-      try {
-        atualizar_refresh_token(
-          success => {
-            if(success.status === 200){                                  
-              conexaoInfo()
-            }
-          },
-          fail => {
-            console.error(fail)
-            erroLogin()
-            setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
-          }
-        )
-        conexaoInfo()        
-
-      } catch (err) {
-        console.error(err)
-        erroLogin()
-        setErro("Que feio servidor! :C .... Estamos fazendo as atualizações necessárias para que o aplicativo volte ao normal.");
-
-      }
-    })()
+    //effect(setErro, setCodBarra, setMoedas)
   })
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <CssBaseline />
+      <div className={classes.Paper}>
+        {erro && <div className={classes.Erro}>{erro}</div>}
+        <div className={classes.BoxQtdMoedas}>
+          <span className={classes.QtdMoedas}>{QtdMoedas}</span>
+          <span className={classes.LabelPontos}>Pontos</span>
+        </div>
 
-      <div className={classes.paper}>
-        
-        {erro && <div>{erro}</div>}
-        <div>{QtdMoedas}</div>
-
-        <div>{CodBarra && <QRCode value={CodBarra} size={200} />}</div>
-        <div className={classes.codBarra}>{CodBarra}</div>
-  
+        <div className={classes.CampoCodBarra}>
+          <div className={classes.TextCodBarra}>{CodBarra && <QRCode value={CodBarra} size={200} />}</div>
+          <div className={classes.CodBarra}>{CodBarra}</div>
+        </div>
       </div>
-    </Container>
   )
 }
 

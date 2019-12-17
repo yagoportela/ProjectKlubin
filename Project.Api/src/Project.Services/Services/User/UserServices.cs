@@ -26,6 +26,9 @@ namespace Project.Services.Services.User
             return await _repository.DeleteAsync (id);
         }
 
+        public async Task<UserEntity> GetUser (string id) {
+            return await _repository.ToRecover(id);
+        }
         public async Task<UserEntity> Get (string token) {
 
             using (HttpClient client = new HttpClient())
@@ -36,7 +39,6 @@ namespace Project.Services.Services.User
                 string conteudo = await response.Content.ReadAsStringAsync();
                 var conteudoJson = JsonConvert.DeserializeObject<UserRest>(conteudo);
             
-                var retorno = await _repository.ToRecover(conteudoJson.sub);
                 return await _repository.ToRecover(conteudoJson.sub);
             }
         }
@@ -50,7 +52,7 @@ namespace Project.Services.Services.User
             return await _repository.InsertAsync (user);
         }
         
-        public async Task<UserEntity> Put (UserEntity user, Guid id) {
+        public async Task<int> Put (UserEntity user, Guid id) {
             return await _repository.UpdateAsync (user, id);
         }
 
@@ -107,6 +109,12 @@ namespace Project.Services.Services.User
                 return false;
             }
         }
-        
+
+        public async Task<int> AdicionarMoedas(UserEntity user, int quantidade)
+        {            
+            user.moedas = ""+(int.Parse(user.moedas) + quantidade);
+            var resultado = await _repository.UpdateAsync(user, user.Id);
+            return resultado;
+        }
     }
 }

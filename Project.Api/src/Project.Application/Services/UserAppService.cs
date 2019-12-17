@@ -18,18 +18,6 @@ namespace Project.Application.Services
             _user = user;
         }
 
-        public Notifications<UserEntity> login1()
-        {            
-            var teste = new UserEntity();
-            teste.ImgPerfil="testenewimagemss.png";
-            teste.Tipo=0;
-            teste.nome="teste";
-            teste.cpf="1646546";
-            teste.moedas="21";
-            teste.codigoDeBarras="1654646546546545646546545646";
-            return new Notifications<UserEntity>(true, teste);
-        }
-
         public UserEntity login(Guid id)
         {
             var resultado = _user.Get(id.ToString());
@@ -82,6 +70,22 @@ namespace Project.Application.Services
             catch (ArgumentException ex)
             {
                 return new Notifications(false, ex.Message);
+            }
+        }
+
+        public async Task<Notifications<object>> AdicionarMoedas(string id, int quantidade) {
+           try
+            {
+                var userEntity = await _user.GetUser(id);
+                var result = Convert.ToBoolean(await _user.AdicionarMoedas(userEntity, quantidade));
+               
+                return new Notifications<object>(true, result);
+                
+
+            }
+            catch (ArgumentException ex)
+            {                
+                return new Notifications<object>(false, ex.Message);
             }
         }
 

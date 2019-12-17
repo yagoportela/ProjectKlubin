@@ -71,23 +71,21 @@ namespace Project.Infra.Data.Repository
             }
         }
 
-        public async Task<T> UpdateAsync(T item, Guid id) {
+        public async Task<int> UpdateAsync(T item, Guid id) {
             try {
                 var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
                 if (result == null)
-                    return null;
+                    return 0;
 
                 item.Id = new Guid(id.ToString());
                 item.UpdateAt = DateTime.UtcNow;
                 item.CreateAt = result.CreateAt;
 
                 _context.Entry (result).CurrentValues.SetValues(item);
-                await _context.SaveChangesAsync ();
+                return await _context.SaveChangesAsync ();
             } catch (Exception ex) {
                 throw ex;
             }
-
-            return item;
         }
     }
 }

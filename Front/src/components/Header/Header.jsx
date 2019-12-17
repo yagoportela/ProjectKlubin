@@ -6,11 +6,10 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
-import withStyles from '@material-ui/core/styles/withStyles'
 // @material-ui/icons
 import MenuIcon from '@material-ui/icons/Menu'
 // components
-import headerStyle from 'assets/styles/components/headerStyle'
+import headerStyle from './headerStyle'
 import Logo from 'assets/Images/logo-og2.png'
 import HeaderDesktop from './HeaderDesktop'
 import HeaderMobile from './HeaderMobile'
@@ -26,6 +25,7 @@ const Header = () => {
   }, [mobileOpen])
 
   return (
+    <div>
     <AppBar className={classes.AppBar}>
       <Toolbar className={'container'}>
 
@@ -54,7 +54,8 @@ const Header = () => {
         <HeaderMobile mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} classes={classes} routes={routes} />
       </Hidden>
     </AppBar>
+    </div>
   )
 }
 
-export default withStyles(headerStyle)(Header)
+export default Header

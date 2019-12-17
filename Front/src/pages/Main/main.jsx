@@ -1,16 +1,32 @@
-import React, { lazy, Fragment } from 'react'
+//React
+import React, { lazy, Fragment, useCallback } from 'react'
 import {BrowserRouter} from 'react-router-dom'
+//Material-Ui
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Container from '@material-ui/core/Container'
+//Components
+import MainStyle from './MainStyle'
 
-const Header = lazy(() => import('components/Header'))
-const Routes = lazy(() => import('utils/Routes'))
+const Main = () => { 
 
-const Main = () => (
+  const Header = lazy(() => import('components/Header'))
+  const Routes = lazy(() => import('utils/Routes'))
+  const Root = lazy(() => import('pages/AdicionarMoedas'))
+  const classes = useCallback(MainStyle(), [])
+  
+  return (
     <Fragment>
-      <BrowserRouter>          
-        <Header />
-        <Routes />
+      <BrowserRouter>    
+        <Container component='main' maxWidth='xs'>
+          <CssBaseline />      
+            <Header />
+            <div className={classes.Main}>
+              <Root />
+            </div>
+        </Container>
       </BrowserRouter>
-  </Fragment>
-)
+    </Fragment>
+  )
+}
 
 export default Main

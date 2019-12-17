@@ -11,7 +11,7 @@ namespace Project.Application.interfaces
         Task<Notifications<UserEntity>> Post(UserRegisterDTO workshopValue);
         Task<Notifications> Put(Guid id, UserEntity workshopValue);
         Task<Notifications<object>> Get(string token);
-        Notifications<UserEntity> login1();
         UserEntity login(Guid id);
+        Task<Notifications<object>> AdicionarMoedas(string id, int quantidade);
     }
 }

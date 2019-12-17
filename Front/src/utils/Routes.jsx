@@ -4,6 +4,7 @@ import Routespath from './routesObject.jsx'
 
 export class Routes extends Component {
     render() {
+        
         return (
             <main className='container'>
                 <Switch>
@@ -15,7 +16,7 @@ export class Routes extends Component {
                                 exact={route.exact === undefined || route.exact ? true : false}
                                 component={() => <h2><route.content /></h2>}
                             />
-                    )})}
+                        )})}
                     <Redirect from='*' to='/' />
                 </Switch>
             </main>
